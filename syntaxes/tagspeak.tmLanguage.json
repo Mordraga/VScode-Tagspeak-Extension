@@ -1,0 +1,60 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Tagspeak",
+  "scopeName": "source.tagspeak",
+  "patterns": [
+    {"include": "#comment"},
+    {"include": "#packet"},
+    {"include": "#connector"},
+    {"include": "#number"},
+    {"include": "#string"}
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {"name": "comment.line.number-sign.tagspeak", "match": "#.*$"},
+        {"name": "comment.line.double-slash.tagspeak", "match": "//.*$"},
+        {
+          "name": "comment.block.tagspeak",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "packet": {
+      "name": "meta.packet.tagspeak",
+      "begin": "\\[",
+      "beginCaptures": {"0": {"name": "punctuation.section.brackets.begin.tagspeak"}},
+      "end": "\\]",
+      "endCaptures": {"0": {"name": "punctuation.section.brackets.end.tagspeak"}},
+      "patterns": [
+        {
+          "name": "entity.name.tag.tagspeak",
+          "match": "[a-zA-Z:]+"
+        },
+        {
+          "name": "keyword.operator.at.tagspeak",
+          "match": "@"
+        },
+        {"include": "#string"},
+        {"include": "#number"}
+      ]
+    },
+    "connector": {
+      "name": "keyword.operator.connector.tagspeak",
+      "match": ">"
+    },
+    "number": {
+      "name": "constant.numeric.tagspeak",
+      "match": "(?<![\\w])\\d+(?:\\.\\d+)?"
+    },
+    "string": {
+      "name": "string.quoted.double.tagspeak",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {"name": "constant.character.escape.tagspeak", "match": "\\\\."}
+      ]
+    }
+  }
+}
