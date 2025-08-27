@@ -1,0 +1,54 @@
+{
+  "name": "tagspeak-vscode",
+  "displayName": "Tagspeak",
+  "description": "QoL support for the Tagspeak DSL: syntax highlighting, snippets and run commands.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Programming Languages"],
+  "activationEvents": [
+    "onLanguage:tagspeak",
+    "onCommand:tagspeak.runFile"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "tagspeak",
+        "aliases": ["Tagspeak", "tagspeak"],
+        "extensions": [".tgsk"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "tagspeak",
+        "scopeName": "source.tagspeak",
+        "path": "./syntaxes/tagspeak.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "tagspeak",
+        "path": "./snippets/tagspeak.code-snippets"
+      }
+    ],
+    "commands": [
+      {
+        "command": "tagspeak.runFile",
+        "title": "Tagspeak: Run File"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "test": "echo 'No tests'"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.6.0"
+  }
+}
