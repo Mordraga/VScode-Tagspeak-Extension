@@ -6,6 +6,14 @@ This extension adds basic quality-of-life features for working with [`Tagspeak`]
 - Snippets for common packets (`print`, `store`, `math`, `loop`)
 - Command **Tagspeak: Run File** to execute the current `.tgsk` file using the `tagspeak` CLI
 
+## Running Files
+
+- Use the Command Palette: run `Tagspeak: Run File` while a `.tgsk` editor is active.
+- Configure how it runs:
+  - `tagspeak.runMode`: `terminal` (Integrated Terminal) or `output` (Output panel). Default: `terminal`.
+  - `tagspeak.path.runtime`: Path to the `tagspeak` CLI (absolute path or just `tagspeak` if it’s on your PATH).
+  - On save, the extension runs `tagspeak --check <file>` to surface diagnostics.
+
 ## Project Root (red.tgsk)
 
 - Command **Tagspeak: Create red.tgsk at Root** creates a `red.tgsk` sentinel at your workspace root.

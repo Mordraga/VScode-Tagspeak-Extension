@@ -41,6 +41,22 @@
         "title": "%command.createRed.title%"
       }
     ],
+    "configuration": {
+      "title": "Tagspeak",
+      "properties": {
+        "tagspeak.path.runtime": {
+          "type": "string",
+          "default": "tagspeak",
+          "description": "Path to the Tagspeak CLI (tagspeak_rs) executable. Use an absolute path or keep 'tagspeak' if it's on your PATH."
+        },
+        "tagspeak.runMode": {
+          "type": "string",
+          "enum": ["terminal", "output"],
+          "default": "terminal",
+          "description": "Where to run the current Tagspeak file: Integrated Terminal or Output panel."
+        }
+      }
+    },
     "menus": {
       "explorer/context": [
         {

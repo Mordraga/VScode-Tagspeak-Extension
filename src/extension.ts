@@ -1,11 +1,15 @@
 // @ts-nocheck
 import * as vscode from 'vscode';
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 
 // Activate is run when VS Code loads the extension for a Tagspeak file.
 export function activate(context: vscode.ExtensionContext) {
   const output = vscode.window.createOutputChannel('Tagspeak');
   const diagnostics = vscode.languages.createDiagnosticCollection('tagspeak');
+  const getCfg = () => vscode.workspace.getConfiguration('tagspeak');
+  const q = (s: string) => (/\s/.test(s) ? `"${s.replace(/"/g, '\\"')}"` : s);
+  const getRuntime = () => getCfg().get<string>('path.runtime') || 'tagspeak';
+  const getRunMode = () => (getCfg().get<'terminal' | 'output'>('runMode') || 'terminal');
   // Register a command to run the current Tagspeak file through the CLI interpreter.
   const runCmd = vscode.commands.registerCommand('tagspeak.runFile', async () => {
     const editor = vscode.window.activeTextEditor;
@@ -21,12 +25,30 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     await doc.save();
-    const terminal = vscode.window.createTerminal({
-      name: 'Tagspeak',
-      cwd: vscode.workspace.rootPath,
-    });
-    terminal.sendText(`tagspeak ${doc.fileName}`);
-    terminal.show();
+    const runtime = getRuntime();
+    const runMode = getRunMode();
+    const workspaceFolder = vscode.workspace.getWorkspaceFolder(doc.uri);
+    const cwd = workspaceFolder?.uri.fsPath || vscode.workspace.rootPath || undefined;
+
+    if (runMode === 'terminal') {
+      let terminal = vscode.window.terminals.find(t => t.name === 'Tagspeak');
+      if (!terminal) {
+        terminal = vscode.window.createTerminal({ name: 'Tagspeak', cwd });
+      }
+      terminal.sendText(`${q(runtime)} ${q(doc.fileName)}`);
+      terminal.show();
+    } else {
+      output.clear();
+      output.show(true);
+      output.appendLine(`[tagspeak] ${runtime} ${doc.fileName}`);
+      const child = spawn(runtime, [doc.fileName], { cwd, shell: process.platform === 'win32' });
+      child.stdout.on('data', (d) => output.append(d.toString()));
+      child.stderr.on('data', (d) => output.append(d.toString()));
+      child.on('close', (code) => output.appendLine(`\n[tagspeak] exited with code ${code}`));
+      child.on('error', (err) => {
+        vscode.window.showErrorMessage(`Failed to run Tagspeak: ${err?.message ?? String(err)}`);
+      });
+    }
   });
   // Create a root sentinel file `red.tgsk` at a chosen folder (Explorer right-click) or workspace root.
   const createRedCmd = vscode.commands.registerCommand('tagspeak.createRed', async (resource?: vscode.Uri) => {
@@ -78,8 +100,11 @@ export function activate(context: vscode.ExtensionContext) {
       return;
     }
 
-    const cmd = `tagspeak --check ${doc.fileName}`;
-    exec(cmd, { cwd: vscode.workspace.rootPath }, (_err, stdout, stderr) => {
+    const runtime = getRuntime();
+    const workspaceFolder = vscode.workspace.getWorkspaceFolder(doc.uri);
+    const cwd = workspaceFolder?.uri.fsPath || vscode.workspace.rootPath || undefined;
+    const cmd = `${q(runtime)} --check ${q(doc.fileName)}`;
+    exec(cmd, { cwd }, (_err, stdout, stderr) => {
       const diag: vscode.Diagnostic[] = [];
       const lines = `${stdout}\n${stderr}`.split(/\r?\n/);
       for (const line of lines) {
