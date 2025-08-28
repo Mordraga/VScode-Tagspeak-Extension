@@ -1,0 +1,6 @@
+{
+  "displayName": "Tagspeak",
+  "description": "QoL support for the Tagspeak DSL: syntax highlighting, snippets and run commands.",
+  "command.runFile.title": "Tagspeak: Run File",
+  "command.createRed.title": "Tagspeak: Create red.tgsk at Root"
+}

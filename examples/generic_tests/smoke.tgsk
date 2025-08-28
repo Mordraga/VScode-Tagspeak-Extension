@@ -1,0 +1,17 @@
+// This is a comment
+# is also fine
+/* This is
+   a comment block
+*/
+[note@"This is also a comment. Tagspeak is modular. Have fun.]
+
+[note@"For this code I'm going to use the [note@""] style."]
+
+[note@"Quick and dirty hello world.]
+[print@"Hello World!"]
+
+[note@"Some basic math and storage logic."]
+[math@10+10]>[store@x]>[print@x]
+[math@0]>[store@x]
+[print@x]
+[note@"Looks weird but it runs fluid. Tagspeak is ment to be parsable at a glance. So compared to normal code it looks wierd as hell."]

@@ -1,17 +1,13 @@
 {
   "name": "tagspeak-vscode",
-  "displayName": "Tagspeak",
-  "description": "QoL support for the Tagspeak DSL: syntax highlighting, snippets and run commands.",
+  "displayName": "%displayName%",
+  "description": "%description%",
   "version": "0.1.0",
-  "publisher": "local",
+  "publisher": "Saryn Harris",
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": ["Programming Languages"],
-  "activationEvents": [
-    "onLanguage:tagspeak",
-    "onCommand:tagspeak.runFile"
-  ],
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
@@ -38,9 +34,22 @@
     "commands": [
       {
         "command": "tagspeak.runFile",
-        "title": "Tagspeak: Run File"
+        "title": "%command.runFile.title%"
+      },
+      {
+        "command": "tagspeak.createRed",
+        "title": "%command.createRed.title%"
       }
-    ]
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "tagspeak.createRed",
+          "group": "navigation@9",
+          "when": "explorerResourceIsFolder && resourceScheme == file"
+        }
+      ]
+    }
   },
   "scripts": {
     "compile": "tsc -p ./",

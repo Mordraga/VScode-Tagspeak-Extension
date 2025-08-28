@@ -1,0 +1,2 @@
+# Print a greeting three times
+[loop@3]{[msg@"Hello again"]>[print]}

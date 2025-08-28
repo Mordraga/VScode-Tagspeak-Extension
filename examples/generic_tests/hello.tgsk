@@ -1,0 +1,2 @@
+# Send "Hello, Tagspeak!" to the printer
+[msg@"Hello, Tagspeak!"]>[print]

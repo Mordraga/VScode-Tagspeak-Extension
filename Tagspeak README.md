@@ -35,6 +35,14 @@ This Rust implementation (`tagspeak_rs`) provides an interpreter that can parse 
 - All `[load@...]` paths are resolved relative to the nearest `red.tgsk`—files outside this boundary cannot be accessed.
 - Example scripts and data files are in the `examples/` directory.
 
+### Example Scripts
+
+Data flows left → right through chained packets. The `examples/` folder shows this in action:
+
+- `examples/hello.tgsk` – `[msg@"Hello, Tagspeak!"]` creates a greeting and hands it to `[print]`.
+- `examples/variables.tgsk` – a value moves into `[store@name]`, is recalled with `[name]`, then reaches `[print]`.
+- `examples/loop.tgsk` – `[loop@3]{...}` runs its block three times, each pass creating a message and sending it onward to `[print]`.
+
 ---
 
 ## Using `.tgsk`
